@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Your To-do App</title>
+    <style>
+        body {
+            font-family: 'Papyrus', fantasy;
+            background-color: darkred;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+            background-image: url("https://www.google.com/url?sa=i&url=https%3A%2F%2Fwww.istockphoto.com%2Fphotos%2Fdigital-to-do-list&psig=AOvVaw0L5J3eS_0X6_dE7KsVmpj_&ust=1731428574823000&source=images&cd=vfe&opi=89978449&ved=0CBEQjRxqFwoTCKDmqZzY1IkDFQAAAAAdAAAAABAE");
+        }
+        .container {
+            background-color: white;
+            padding: 2rem;
+            border-radius: 8px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            width: 100%;
+            max-width: 400px;
+        }
+        h1 {
+            color: rebeccapurple;
+            text-align: center;
+            margin-bottom: 1.5rem;
+        }
+        input, button {
+            width: 100%;
+            padding: 0.5rem;
+            margin-bottom: 1rem;
+            border: 1px solid navajowhite;
+            border-radius: 4px;
+            box-sizing: border-box;
+        }
+        button {
+            background-color: gold;
+            color: black;
+            border: none;
+            cursor: grab;
+            transition: background-color 0.6s;
+        }
+        button:hover {
+            background-color: #45a049;
+        }
+        #todo_display {
+            margin-top: 1.5rem;
+        }
+        .todo-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 0.5rem;
+            border-bottom: 1px solid #eee;
+        }
+        .todo-item:last-child {
+            border-bottom: none;
+        }
+        .todo-item button {
+            width: auto;
+            padding: 0.25rem 0.5rem;
+            margin: 0;
+        }
+        .completed {
+            text-decoration: line-through;
+            color: #888;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Simple Todo App</h1>
+        <input type="text" id="todo_title" placeholder="Enter todo title">
+        <input type="text" id="todo_desc" placeholder="Enter todo description">
+        <button onclick="performOperation()">Add Todo</button>
+        <div id="todo_display"></div>
+    </div>
+
+    <script>
+        const titleInput = document.getElementById("todo_title");
+        const descInput = document.getElementById("todo_desc");
+        const todoDisplay = document.getElementById("todo_display");
+        const todos = [];
+
+        function performOperation() {
+            if (titleInput.value.trim() === "" || descInput.value.trim() === "") {
+                alert("Please enter both title and description")
+                return
+            }
+
+            const newTodo = {
+                title: titleInput.value,
+                desc: descInput.value,
+                completion: false
+            }
+
+            todos.push(newTodo)
+            updateTodoDisplay()
+            titleInput.value = ""
+            descInput.value = ""
+        }
+
+        function updateTodoDisplay() {
+            todoDisplay.innerHTML = ""; // Clear the display
+
+            todos.forEach(function(element, index) {
+                const todo = document.createElement("div")
+                todo.className = "todo-item"
+                todo.innerHTML = `
+                    <span class="${element.completion ? "completed" : ""}">
+                        ${element.title}: ${element.desc}
+                    </span>
+                    <button onclick="toggle(${index})">
+                        ${element.completion ? "Mark as Incomplete" : "Mark as Complete"}
+                    </button>
+                `
+                todoDisplay.appendChild(todo)
+            })
+        }
+
+        function toggle(index) {
+            todos[index].completion = !todos[index].completion;
+            updateTodoDisplay()
+        }
+    </script>
+</body>
+</html>
